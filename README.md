@@ -60,7 +60,7 @@ def apply_replacements_list(graph: Graph, replacers_order: list):
                 print(node)
 ```
 
-You'll see something like this. You need to use one of those node names for '--input' and '--output' options in MO.  
+You'll see something like this. You need to use one of those node names for `--input` and `--output` options in MO.  
 ```sh
 conv2d_input
 Func/StatefulPartitionedCall/input/_0
@@ -93,7 +93,7 @@ You can build the Conv2D C++ Python extension module by running `build.sh` or `b
 `myLayers.so` or `myLayers.pyd` will be generated and copied to the current directory after a successful build.  
 
 
-### How to run `draw-and-infer.py` demo program  
+### How to run `draw-and-infer` demo program  
 Here's a simple yet bit fun demo application for MNIST CNN. You can draw a number on the screen by mouse or finger-tip and you'll see the real-time inference result.  Right-click will clear the screen for another try. Several versions are available.  
 |script|description|
 |----|----|
