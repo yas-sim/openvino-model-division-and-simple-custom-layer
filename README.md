@@ -60,6 +60,25 @@ def apply_replacements_list(graph: Graph, replacers_order: list):
                 print(node)
 ```
 
+You'll see something like this. You need to use one of those node names for '--input' and '--output' options in MO.  
+```sh
+conv2d_input
+Func/StatefulPartitionedCall/input/_0
+unknown
+Func/StatefulPartitionedCall/input/_1
+StatefulPartitionedCall/sequential/conv2d/Conv2D/ReadVariableOp
+StatefulPartitionedCall/sequential/conv2d/Conv2D
+   :   (truncated)   :
+StatefulPartitionedCall/sequential/dense_1/BiasAdd/ReadVariableOp
+StatefulPartitionedCall/sequential/dense_1/BiasAdd
+StatefulPartitionedCall/sequential/dense_1/Softmax
+StatefulPartitionedCall/Identity
+Func/StatefulPartitionedCall/output/_11
+Func/StatefulPartitionedCall/output_control_node/_12
+Identity
+Identity56
+```
+
 ### How to infer with the models on OpenVINO  
 Several versions of scripts are available for the inference testing.  
 |script|description|
