@@ -79,6 +79,7 @@ Here's a simple yet bit fun demo application for MNIST CNN. You can draw a numbe
 |draw-and-infer.py|Use the monolithic IR model|
 |draw-and-infer-div.py|Use divided IR models|
 |draw-and-infer-skip-cpp.py|Use divided IR models which excluded 'target_conv_layer'. Conv2D Python extension is requird.|
+
 ![draw-and-infer](./resources/draw-and-infer.png)
 
 ### Tested environment
