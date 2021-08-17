@@ -12,12 +12,11 @@ model2 = './models/mnist_skip_2'
 
 # Naive implementation of Conv2D + BiasAdd + ReLU -> VERY VERY VERY SLOW but works
 # Param : strides=(1,1), padding='valid', kernel_size=(3,3), filters=64
-def myConv2d(input):
+def myConv2d(input, weights, bias):
 	n,c,h,w     = input.shape   # (1,64,5,5)
 	kernel_size = 3
 	filters     = 64
 	strides     = 1
-	weights, bias = np.load('weights.npy', allow_pickle=True) 					# [(3,3,64,64),(64,)]  (fy,fx,fc,fn), (fn)
 
 	output = np.zeros((n,filters,h-kernel_size+1, w-kernel_size+1), np.float32)	# [1,64,3,3]
 
@@ -28,7 +27,7 @@ def myConv2d(input):
 				for cc in range(c):
 					for fy in range(kernel_size):
 						for fx in range(kernel_size):
-							flt = weights[fy, fx, cc, fc]
+							flt = weights[fy, fx, cc, fc]		# fx and fy are swapped (matmul)
 							dt  = input[0, cc, dy+fy, dx+fx]
 							cnv += flt * dt						# Convolution
 				output[0, fc, dy, dx] = cnv + bias[fc]			# Bias addition
@@ -60,6 +59,8 @@ def main():
 	train_images = train_images.reshape(-1, 1, 28, 28, 1)
 	test_images = test_images.reshape(-1, 1, 28, 28, 1)
 
+	weights, bias = np.load('weights.npy', allow_pickle=True) 					# [(3,3,64,64),(64,)]  (fx,fy,fc,fn), (fn)
+
 	right=0
 	num=0
 	stime = time.time()
@@ -68,7 +69,7 @@ def main():
 		img /= 255.0
 		# Cascade 2 models
 		result1 = exec_net1.infer(inputs={input_name1 : img})		# 1st half of the original model ('target_conv_layer' is excluded)
-		result = myConv2d(result1[output_name1])					# Do Conv2D+BiasAdd+Relu on behalf of the excluded 'target_conv_layer'
+		result = myConv2d(result1[output_name1], weights, bias)		# Do Conv2D+BiasAdd+Relu on behalf of the excluded 'target_conv_layer'
 		result2 = exec_net2.infer(inputs={input_name2 : result})	# 2nd half of the original model
 
 		correct=label												# correct answer (label)

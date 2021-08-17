@@ -35,7 +35,7 @@ def main():
 	train_images = train_images.reshape(-1, 1, 28, 28, 1)
 	test_images = test_images.reshape(-1, 1, 28, 28, 1)
 
-	weights, bias = np.load('weights.npy', allow_pickle=True) 					# [(3,3,64,64),(64,)]  (fy,fx,fc,fn), (fn)
+	weights, bias = np.load('weights.npy', allow_pickle=True) 					# [(3,3,64,64),(64,)]  (fx,fy,fc,fn), (fn)
 
 	right=0
 	num=0

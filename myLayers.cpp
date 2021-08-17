@@ -31,7 +31,7 @@ static PyObject* conv2d(PyObject* self, PyObject* args) {
     npy_intp *bias_shape   = PyArray_SHAPE(bias);
 
     //std::cout << input_shape[0] << "," << input_shape[1] << "," << input_shape[2] << "," << input_shape[3] << std::endl;     // 1,64,5,5   n,c,h,w
-    //std::cout << weight_shape[0] << "," << weight_shape[1] << "," << weight_shape[2] << "," << weight_shape[3] << std::endl; // 3,3,64,64  h,w,c,n
+    //std::cout << weight_shape[0] << "," << weight_shape[1] << "," << weight_shape[2] << "," << weight_shape[3] << std::endl; // 3,3,64,64  w,h,c,n
     //std::cout << bias_shape[0] << std::endl;                                                                                 // 64
 
     size_t input_ch      = input_shape[1];
@@ -62,7 +62,7 @@ static PyObject* conv2d(PyObject* self, PyObject* args) {
                 for(size_t cc=0; cc<input_ch; cc++) {
                     for(size_t fy=0; fy<weight_height; fy++) {
                         for(size_t fx=0; fx<weight_width; fx++) {
-                            float flt = weight_buf[fc + cc*(filters) + fx*(filters*input_ch) + fy*(filters*input_ch*weight_width)];
+                            float flt = weight_buf[fc + cc*(filters) + fx*(filters*input_ch) + fy*(filters*input_ch*weight_width)]; // fx and fy are swapped (matmul)
                             float dt  = input_buf[(dx+fx) + (dy+fy)*(input_width) + cc*(input_width*input_height) ];
                             cnv += flt * dt;
                         }
