@@ -88,7 +88,7 @@ Several versions of scripts are available for the inference testing.
 |inference-skip-python.py|Tak2 2 divided IR models which excluded the 'target_conv_layer'. Program is including a Python version of Conv2D and perform convolution for 'target_conv_layer'. **VERY SLOW.** |4338.6 sec|
 |inference-skip-cpp.py|Tak2 2 divided IR models which excluded the 'target_conv_layer'. Program imports a Python module written in C++ which includes a C++ version of Conv2D. Reasonably fast. Conv2D Python extension module is required. Please refer to the following section for details.|10.8 sec|
 
-**Note 1:** This model is quite tiny and light-weight. OpenVINO can run this model in <0.1msec on Core i7-8665U CPU. The inferencing overhead introduced by dividing the model is noticeable but when you use hevier model, this penalty might be negligible.  
+**Note 1:** This model is quite tiny and light-weight. OpenVINO can run this model in <0.1msec on Core i7-8665U CPU. The inferencing overhead introduced by dividing the model is noticeable but when you use heavy model, this penalty might be negligible.  
 
 ### How to build the Conv2D C++ Python extnsion module  
 You can build the Conv2D C++ Python extension module by running `build.sh` or `build.bat`.  

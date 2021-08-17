@@ -5,11 +5,11 @@ import numpy as np
 from openvino.inference_engine import IECore
 from tensorflow.keras.datasets import mnist
 
-from myLayers import conv2d
+#from myLayers_py import conv2d		# Python version
+from myLayers import conv2d		# C++ version - You need to build myLayer.[so|pyd] first
 
 model1 = './models/mnist_skip_1'
 model2 = './models/mnist_skip_2'
-#model2 = './models/mnist_div_2' # This model should work fine as the 2nd model ('mnist_skip_2' and 'mnist_div_2' are the identical model)
 
 def main():
 	ie = IECore()

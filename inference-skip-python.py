@@ -5,35 +5,11 @@ import numpy as np
 from openvino.inference_engine import IECore
 from tensorflow.keras.datasets import mnist
 
+from myLayers_py import conv2d		# Python version
+#from myLayers import conv2d		# C++ version - You need to build myLayer.[so|pyd] first
+
 model1 = './models/mnist_skip_1'
 model2 = './models/mnist_skip_2'
-#model2 = './models/mnist_div_2' # This model should work fine as the 2nd model ('mnist_skip_2' and 'mnist_div_2' are the identical model)
-
-
-# Naive implementation of Conv2D + BiasAdd + ReLU -> VERY VERY VERY SLOW but works
-# Param : strides=(1,1), padding='valid', kernel_size=(3,3), filters=64
-def myConv2d(input, weights, bias):
-	n,c,h,w     = input.shape   # (1,64,5,5)
-	kernel_size = 3
-	filters     = 64
-	strides     = 1
-
-	output = np.zeros((n,filters,h-kernel_size+1, w-kernel_size+1), np.float32)	# [1,64,3,3]
-
-	for fc in range(filters):
-		for dy in range(0, h-kernel_size+1, strides):
-			for dx in range(0, w-kernel_size+1, strides):
-				cnv = 0
-				for cc in range(c):
-					for fy in range(kernel_size):
-						for fx in range(kernel_size):
-							flt = weights[fy, fx, cc, fc]		# fx and fy are swapped (matmul)
-							dt  = input[0, cc, dy+fy, dx+fx]
-							cnv += flt * dt						# Convolution
-				output[0, fc, dy, dx] = cnv + bias[fc]			# Bias addition
-	output = np.where(output<0, 0, output)						# ReLU
-	return output
-
 
 def main():
 	ie = IECore()
@@ -69,7 +45,7 @@ def main():
 		img /= 255.0
 		# Cascade 2 models
 		result1 = exec_net1.infer(inputs={input_name1 : img})		# 1st half of the original model ('target_conv_layer' is excluded)
-		result = myConv2d(result1[output_name1], weights, bias)		# Do Conv2D+BiasAdd+Relu on behalf of the excluded 'target_conv_layer'
+		result = conv2d(result1[output_name1], weights, bias)		# Do Conv2D+BiasAdd+Relu on behalf of the excluded 'target_conv_layer'
 		result2 = exec_net2.infer(inputs={input_name2 : result})	# 2nd half of the original model
 
 		correct=label												# correct answer (label)
