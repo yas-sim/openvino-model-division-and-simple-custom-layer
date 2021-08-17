@@ -81,12 +81,12 @@ Identity56
 
 ### How to infer with the models on OpenVINO  
 Several versions of scripts are available for the inference testing.  
-|script|description|
-|----|----|
-|inference.py|Use simgle, monolithic IR model and run inference|
-|inference-div.py|Take 2 divided IR models and run inference. 2 models will be cascaded.|
-|inference-skip-python.py|Tak2 2 divided IR models which excluded the 'target_conv_layer'. Program is including a Python version of Conv2D and perform convolution for 'target_conv_layer'. **VERY SLOW.** |
-|inference-skip-cpp.py|Tak2 2 divided IR models which excluded the 'target_conv_layer'. Program imports a Python module written in C++ which includes a C++ version of Conv2D. Reasonably fast. Conv2D Python extension module is required. Please refer to the following section for details.|
+|script|description|(reference execution time, Core i7-8665U)|
+|----|----|----|
+|inference.py|Use simgle, monolithic IR model and run inference|3.3 sec|
+|inference-div.py|Take 2 divided IR models and run inference. 2 models will be cascaded.|5.3 sec|
+|inference-skip-python.py|Tak2 2 divided IR models which excluded the 'target_conv_layer'. Program is including a Python version of Conv2D and perform convolution for 'target_conv_layer'. **VERY SLOW.** |4338.6 sec|
+|inference-skip-cpp.py|Tak2 2 divided IR models which excluded the 'target_conv_layer'. Program imports a Python module written in C++ which includes a C++ version of Conv2D. Reasonably fast. Conv2D Python extension module is required. Please refer to the following section for details.|10.8 sec|
 
 ### How to build the Conv2D C++ Python extnsion module  
 You can build the Conv2D C++ Python extension module by running `build.sh` or `build.bat`.  
