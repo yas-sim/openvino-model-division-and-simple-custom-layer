@@ -20,7 +20,9 @@ The project includes Python and C++ implementations of **naive** 2D convolution 
 
 
 ### How to train the model and create trained model files  
-You can train the model by just kicking the `training.py` script. `training.py` will use `keras.datasets.mnist` as the training and validation dataset and train the model, and then save the trained model in `SavedModel` format.
+You can train the model by just kicking the `training.py` script. `training.py` will use `keras.datasets.mnist` as the training and validation dataset and train the model, and then save the trained model in `SavedModel` format.  
+`training.py` also generates `weights.npy` file that contains the weight and bias data of `target_conv_layer` layer. This weight and bias data will be used by the special made Conv2D layer.  
+
 ```sh
 python3 training.py
 ```
