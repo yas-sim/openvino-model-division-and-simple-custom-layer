@@ -11,6 +11,7 @@
 
 This project demonstrates how to divide a DL model, and fill the hole for skipped leyers.  
 The project includes Python and C++ implementations of **naive** 2D convolution layer to perform the Conv2D task which was supposed to have done by the skipped layer. This could be a good reference when you need to implement a custom layer function to your project but don't want to develop full-blown OpenVINO custom layers due to some restrictions such as development time.  
+In this project, we will use a simple CNN classification model trained with MNIST dataset and demonstrate the way to divide the model with skipping a layer (on purpose) and use a simple custom layer to cover the data processing for the skipped layer.  
 
 ![image](./resources/model-division.jpg)
 
