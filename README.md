@@ -20,9 +20,10 @@ In this project, we will use a simple CNN classification model trained with MNIS
 - OpenVINO 2021.4 (2021.x may work)  
 
 
-### How to train the model and create trained model files  
+### How to train the model and create a trained model  
 You can train the model by just kicking the `training.py` script. `training.py` will use `keras.datasets.mnist` as the training and validation dataset and train the model, and then save the trained model in `SavedModel` format.  
 `training.py` also generates `weights.npy` file that contains the weight and bias data of `target_conv_layer` layer. This weight and bias data will be used by the special made Conv2D layer.  
+Since the model we use is tiny, it will take just a couple of minutes to complete.  
 
 ```sh
 python3 training.py
@@ -34,9 +35,9 @@ python3 training.py
 
 |script|description|
 |----|----|
-|convert-normal.sh|Convert entire model and generate single IR model file (no division)|
-|convert-divide.sh|Divide the input model and output 2 IR models. All layers are still contained (no skipped layers)|
-|convert-divide-skip.sh|Divide the input model and skip 'target_conv_layer'|
+|`convert-normal.sh`|Convert entire model and generate single IR model file (no division)|
+|`convert-divide.sh`|Divide the input model and output 2 IR models. All layers are still contained (no skipped layers)|
+|`convert-divide-skip.sh`|Divide the input model and skip 'target_conv_layer'|
 - The converted models can be found in `./models` folder.  
 
 ### Tip to find the correct node name for Model Optimizer
@@ -82,12 +83,13 @@ Identity56
 
 ### How to infer with the models on OpenVINO  
 Several versions of scripts are available for the inference testing.  
+Those test programs will do inference 10,000 times with the MNIST validation dataset. Test program displays `'.'` when inference result is correct and `'X'` when it's wrong. Performance numbers are measured from the start of 10,000 inferences to the end of all inferences. So, it is including loop overhead, pre/post processing time and so on.   
 |script|description|(reference execution time, Core i7-8665U)|
 |----|----|----|
-|inference.py|Use simgle, monolithic IR model and run inference|3.3 sec|
-|inference-div.py|Take 2 divided IR models and run inference. 2 models will be cascaded.|5.3 sec(*1)|
-|inference-skip-python.py|Tak2 2 divided IR models which excluded the 'target_conv_layer'. Program is including a Python version of Conv2D and perform convolution for 'target_conv_layer'. **VERY SLOW.** |4338.6 sec|
-|inference-skip-cpp.py|Tak2 2 divided IR models which excluded the 'target_conv_layer'. Program imports a Python module written in C++ which includes a C++ version of Conv2D. Reasonably fast. Conv2D Python extension module is required. Please refer to the following section for details.|10.8 sec|
+|`inference.py`|Use simgle, monolithic IR model and run inference|3.3 sec|
+|`inference-div.py`|Take 2 divided IR models and run inference. 2 models will be cascaded.|5.3 sec(*1)|
+|`inference-skip-python.py`|Tak2 2 divided IR models which excluded the 'target_conv_layer'. Program is including a Python version of Conv2D and perform convolution for 'target_conv_layer'. **VERY SLOW.** |4338.6 sec|
+|`inference-skip-cpp.py`|Tak2 2 divided IR models which excluded the 'target_conv_layer'. Program imports a Python module written in C++ which includes a C++ version of Conv2D. Reasonably fast. Conv2D Python extension module is required. Please refer to the following section for details.|10.8 sec|
 
 **Note 1:** This model is quite tiny and light-weight. OpenVINO can run this model in <0.1msec on Core i7-8665U CPU. The inferencing overhead introduced by dividing the model is noticeable but when you use heavy model, this penalty might be negligible.  
 
@@ -100,9 +102,9 @@ You can build the Conv2D C++ Python extension module by running `build.sh` or `b
 Here's a simple yet bit fun demo application for MNIST CNN. You can draw a number on the screen by mouse or finger-tip and you'll see the real-time inference result.  Right-click will clear the screen for another try. Several versions are available.  
 |script|description|
 |----|----|
-|draw-and-infer.py|Use the monolithic IR model|
-|draw-and-infer-div.py|Use divided IR models|
-|draw-and-infer-skip-cpp.py|Use divided IR models which excluded 'target_conv_layer'. Conv2D Python extension is requird.|
+|`draw-and-infer.py`|Use the monolithic IR model|
+|`draw-and-infer-div.py`|Use divided IR models|
+|`draw-and-infer-skip-cpp.py`|Use divided IR models which excluded 'target_conv_layer'. Conv2D Python extension is requird.|
 
 ![draw-and-infer](./resources/draw-and-infer.png)
 
